@@ -1,5 +1,4 @@
 
-
 var constants = require('../services/constants');
 var webhookHelper = require('../services/webhook-helpers');
 
@@ -21,7 +20,6 @@ exports.validateWebhook = (req, res) => {
         if (mode === 'subscribe' && token === VERIFY_TOKEN) {
 
             // Respond with 200 OK and challenge token from the request
-            console.log('WEBHOOK_VERIFIED');
             res.status(200).send(challenge);
             return
         } else {
@@ -30,6 +28,8 @@ exports.validateWebhook = (req, res) => {
             return;
         }
     }
+    res.sendStatus(403);
+    return;
 }
 
 exports.sendMessage = (req, res) => {
@@ -96,7 +96,7 @@ exports.showMessages = (req, res) => {
 
     tr.splice(0, 0, thead);
     let table = `<table>${tr}</table>`
-    res.send(table);
+    res.status(200).send(table);
 }
 
 exports.getMessageById = (req, res) => {
@@ -112,5 +112,5 @@ exports.getMessageById = (req, res) => {
             break;
         }
     }
-    res.send(requiredMessage || '<h4>no message found </h4>');
+    res.status(200).send(requiredMessage || '<h4>no message found </h4>');
 }
